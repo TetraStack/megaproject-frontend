@@ -9,6 +9,7 @@ import {
 import { Badge } from "../components/ui/badge";
 import { Check, Star } from "lucide-react";
 import { ThemeToggle } from "./ThemeToggle";
+import { Link } from "react-router-dom";
 
 const LandingPage = () => {
   return (
@@ -41,8 +42,12 @@ const LandingPage = () => {
             </a>
           </div>
           <div className="flex space-x-2">
-            <Button variant="ghost">Sign In</Button>
-            <Button>Get Started</Button>
+            <Button asChild variant="ghost">
+              <Link to="/signin">Sign In</Link>
+            </Button>
+            <Button asChild>
+              <Link to="/signup">Get Started</Link>
+            </Button>
             <ThemeToggle />
           </div>
         </div>
@@ -68,10 +73,11 @@ const LandingPage = () => {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center animate-scale-in">
             <Button
+              asChild
               size="lg"
               className="gradient-purple-blue text-white hover:shadow-glow transition-all duration-300"
             >
-              Get Started Free
+              <Link to="/signup">Get Started Free</Link>
             </Button>
             <Button size="lg" variant="outline">
               Live Demo
