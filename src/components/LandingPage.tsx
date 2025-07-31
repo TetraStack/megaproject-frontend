@@ -10,8 +10,10 @@ import { Badge } from "../components/ui/badge";
 import { Check, Star } from "lucide-react";
 import { ThemeToggle } from "./ThemeToggle";
 import { Link } from "react-router-dom";
+import { useAuthStore } from "@/stores/userstore";
 
 const LandingPage = () => {
+  const { user } = useAuthStore();
   return (
     <div className="min-h-screen">
       {/* Navigation */}
@@ -42,12 +44,21 @@ const LandingPage = () => {
             </a>
           </div>
           <div className="flex space-x-2">
-            <Button asChild variant="ghost">
-              <Link to="/signin">Sign In</Link>
-            </Button>
-            <Button asChild>
-              <Link to="/signup">Get Started</Link>
-            </Button>
+            {user ? (
+              <Button asChild variant="ghost">
+                <Link to="/dashboard">Dashboard</Link>
+              </Button>
+            ) : (
+              <>
+                <Button asChild variant="ghost">
+                  <Link to="/signin">Sign In</Link>
+                </Button>
+                <Button asChild>
+                  <Link to="/signup">Get Started</Link>
+                </Button>
+              </>
+            )}
+
             <ThemeToggle />
           </div>
         </div>

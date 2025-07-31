@@ -8,6 +8,11 @@ export const userSchema = z.object({
     repassword: z.string(),
 })
 
+export const loginSchema = z.object({
+    email: z.string().email(),
+    password: z.string().min(6, { message: "password should be atleast 6 characters." }).max(16, { message: "Password can't be more than 16 characters" }),
+})
+
 export interface registerUserForm {
     fullName: string,
     username: string,

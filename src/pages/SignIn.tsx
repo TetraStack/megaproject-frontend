@@ -7,8 +7,31 @@ import {
 } from "../components/ui/card";
 import { Button } from "../components/ui/button";
 import { Link } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { loginSchema } from "@/types/user";
+import { useLoginUser } from "@/queries/userQueries";
+
+export interface loginInputs {
+  email: string;
+  password: string;
+}
 
 const SignIn = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<loginInputs>({
+    resolver: zodResolver(loginSchema),
+  });
+
+  const { mutate: getLogin, isPending } = useLoginUser();
+
+  const onSubmit = async (data: loginInputs) => {
+    console.log(data);
+    await getLogin(data);
+  };
   return (
     <div className="min-h-screen flex items-center justify-center bg-muted/50">
       <Card className="w-full max-w-md shadow-lg">
@@ -19,12 +42,13 @@ const SignIn = () => {
           <CardDescription>Welcome back to ProjectFlow</CardDescription>
         </CardHeader>
         <CardContent>
-          <form className="space-y-6">
+          <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
             <div>
               <label className="block text-sm font-medium mb-1" htmlFor="email">
                 Email
               </label>
               <input
+                {...register("email")}
                 id="email"
                 name="email"
                 type="email"
@@ -41,6 +65,7 @@ const SignIn = () => {
                 Password
               </label>
               <input
+                {...register("password")}
                 id="password"
                 name="password"
                 type="password"
@@ -51,9 +76,10 @@ const SignIn = () => {
             </div>
             <Button
               type="submit"
-              className="w-full gradient-purple-blue text-white"
+              disabled={isPending}
+              className="w-full bg-blue-600 hover:bg-blue-500 text-white cursor-pointer"
             >
-              Sign In
+              {isPending ? "Please wait..." : "Sign In"}
             </Button>
           </form>
           <div className="text-center mt-6 text-sm text-muted-foreground">
